@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Lista de Alunos{% endblock %}
+
+{% block content %}
+<h2>Alunos cadastrados</h2>
+
+{% if alunos %}
+<ul class="item-list">
+    {% for aluno in alunos %}
+    <li>
+        <div>
+            <strong>{{ aluno.nome }}</strong>
+            <span>{{ aluno.curso }}</span>
+        </div>
+        <a class="button" href="/alunos/{{ aluno.id }}/">Ver detalhes</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Nenhum aluno cadastrado.</p>
+{% endif %}
+
+<div class="actions">
+    <a class="button secondary" href="/">Inicio</a>
+    <a class="button secondary" href="/livros/">Ver livros</a>
+</div>
+{% endblock %}

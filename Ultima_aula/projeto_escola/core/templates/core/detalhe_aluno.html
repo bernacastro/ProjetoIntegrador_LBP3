@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Detalhes do Aluno{% endblock %}
+
+{% block content %}
+<h2>{{ aluno.nome }}</h2>
+
+<p><strong>Matricula:</strong> {{ aluno.matricula }}</p>
+<p><strong>Email:</strong> {{ aluno.email }}</p>
+<p><strong>Idade:</strong> {{ aluno.idade }}</p>
+<p><strong>Curso:</strong> {{ aluno.curso }}</p>
+
+{% if aluno.ativo %}
+<p>Este aluno esta ativo.</p>
+{% else %}
+<p>Este aluno nao esta ativo.</p>
+{% endif %}
+
+<div class="actions">
+    <a class="button" href="/alunos/">Voltar para alunos</a>
+    <a class="button secondary" href="/">Inicio</a>
+</div>
+{% endblock %}

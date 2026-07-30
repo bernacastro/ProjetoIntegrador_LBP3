@@ -1,0 +1,1 @@
+{% extends 'acervo/base.html' %}{% block content %}<section class="login"><h2>Entrar</h2><form method="post" class="formulario">{% csrf_token %}{{ form.as_p }}<button>Entrar</button></form><p>Não tem conta? <a href="{% url 'cadastro' %}">Cadastre-se</a>.</p></section>{% endblock %}

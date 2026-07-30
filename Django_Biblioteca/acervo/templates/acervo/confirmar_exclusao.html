@@ -1,0 +1,1 @@
+{% extends 'acervo/base.html' %}{% block content %}<h2>Confirmar exclusão</h2><p>Deseja excluir <strong>{{ objeto }}</strong>?</p><form method="post" class="formulario">{% csrf_token %}<button>Excluir</button> <a href="javascript:history.back()">Cancelar</a></form>{% endblock %}

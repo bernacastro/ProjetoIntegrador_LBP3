@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Curso{% endblock %}
+
+{% block content %}
+    <h2>{{ nome_curso }}</h2>
+    <p><strong>Professor:</strong> {{ professor }}</p>
+    <p><strong>Carga horaria:</strong> {{ carga_horaria }} horas</p>
+
+    <h3>Disciplinas</h3>
+    <ul>
+        {% for disciplina in disciplinas %}
+            <li>{{ disciplina }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if turno == 'Noturno' %}
+        <p>Esta turma funciona no periodo noturno.</p>
+    {% endif %}
+{% endblock %}

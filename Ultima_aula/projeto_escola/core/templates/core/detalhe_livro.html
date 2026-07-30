@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Detalhes do Livro{% endblock %}
+
+{% block content %}
+<h2>{{ livro.titulo }}</h2>
+
+<p><strong>Autor:</strong> {{ livro.autor }}</p>
+<p><strong>Editora:</strong> {{ livro.editora }}</p>
+<p><strong>Ano de publicação:</strong> {{ livro.ano_publicacao }}</p>
+<p><strong>Quantidade:</strong> {{ livro.quantidade }}</p>
+
+{% if livro.disponivel %}
+<p>Este livro está disponível.</p>
+{% else %}
+<p>Este livro não está disponível.</p>
+{% endif %}
+
+<div class="actions">
+    <a class="button" href="/livros/">Voltar para livros</a>
+    <a class="button secondary" href="/">Inicio</a>
+</div>
+
+{% endblock %}
