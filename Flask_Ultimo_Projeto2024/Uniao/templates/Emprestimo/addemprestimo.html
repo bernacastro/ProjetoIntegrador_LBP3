@@ -1,0 +1,56 @@
+<div class="formulario">
+  <h1 class="centralizar">Adicionar Empréstimo</h1>
+
+  
+  <form action="{{ url_for('bp_loan.add_emprestimo') }}" method="post" class="pure-form pure-form-aligned">
+      <fieldset>
+          <div class="pure-control-group">
+
+              <label for="usuario_id"> <h3>Usuário</h3> </label>
+              <select id="usuario_id" name="usuario_id" class="pure-input-1-2" required>
+                  <option value="" disabled>Selecione um usuário</option>
+                  {% if usuarios %}
+                      {% for usuario in usuarios %}
+                          <option value="{{ usuario.id }}">{{ usuario.nome }}</option>
+                      {% endfor %}
+
+                  {% else %}
+                      <option value="" disabled>Não há usuários cadastrados</option>
+                  {% endif %}
+              </select>
+
+          </div>
+          <div class="pure-control-group">
+
+              <label for="livro_id"> <h3>Livro</h3> </label>
+              <select id="livro_id" name="livro_id" class="pure-input-1-2" required>
+                  <option value="" disabled>Selecione um livro</option>
+                  {% if livros %}
+                      {% for livro in livros %}
+                          <option value="{{ livro.id }}">{{ livro.titulo }}</option>
+                      {% endfor %}
+                  {% else %}
+                      <option value="" disabled>Não há livros cadastrados</option>
+                  {% endif %}
+              </select><br>
+
+          </div>
+
+          <div class="pure-control-group">
+              <label for="data_devolucao_prevista"> <h3>Data Prevista para Devolução</h3> </label>
+              <input type="date" id="data_devolucao_prevista" name="data_devolucao_prevista" required>
+          </div>
+
+          <div class="pure-control-group">
+              <label></label>
+              <button class="pure-button pure-button-primary" type="submit">Adicionar Empréstimo</button>
+          </div>                        
+      
+          <div class="pure-control-group">
+              <label></label>
+              <a class="pure-button" href="{{ url_for('bp_loan.view_emprestimos') }}">Ver Empréstimos</a></button>
+          </div>
+      </fieldset>
+  </form>
+
+</div>

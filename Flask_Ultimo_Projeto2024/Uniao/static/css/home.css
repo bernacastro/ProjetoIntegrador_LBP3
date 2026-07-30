@@ -1,0 +1,18 @@
+.formularios-container,
+.formularios-esconder.show
+{
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+  gap: 20px; /* Espaçamento entre os formulários */
+}
+
+.formularios-esconder {
+  display: none; 
+  transition: transform 0.3s ease; /* Animação suave ao rotacionar */
+  margin-top: 10px;
+}
+
+.formularios-esconder.show {
+  transition: transform 0.3s ease; /* Animação suave ao rotacionar */
+  display: flex;
+}

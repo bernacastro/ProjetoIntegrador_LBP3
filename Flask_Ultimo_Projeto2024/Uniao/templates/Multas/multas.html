@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Multas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}"> 
+</head>
+
+<body>
+    <header>
+        <h1 class="centralizar">Gerenciamento de Multas</h1>
+    </header>
+
+    <main>
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+        <h2>Multas Cadastradas 📋</h2>
+        
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Valor</th>
+                    <th>Data de Geração</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for multa in multas %}
+                <tr>
+                    <td>{{ multa.id }}</td>
+                    <td>{{ multa.usuario.nome }}</td>
+                    <td>R${{ multa.valor }}</td>
+                    <td>{{ multa.data_geracao }}</td>
+                    <td>{{ multa.status }}</td>
+                    <td>
+                        {% if multa.status == 'pendente' %}
+                            <a href="{{ url_for('bp_multas.pagar_multa', multa_id=multa.id) }}" class="pure-button"
+                               style="background-color: #00bd48;">Pagar</a>
+                        {% endif %}
+                        <a href="{{ url_for('bp_multas.excluir_multa', multa_id=multa.id) }}" class="pure-button"
+                           style="background-color: #f44336;">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+
+</body>
+
+</html>

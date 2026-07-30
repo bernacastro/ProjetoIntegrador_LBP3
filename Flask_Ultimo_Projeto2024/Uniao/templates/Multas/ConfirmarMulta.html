@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Geração de Multa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}"> 
+
+</head>
+
+<body>
+
+    <header>
+        <h1 class="centralizar">Confirmar Geração de Multa 💸</h1>
+    </header>
+
+    <main>
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+        <div class="super-centralizar">
+            <div class="formulario">
+                <h2 class="centralizar">Confirmação para Gerar Multa</h2>
+
+                <!-- Informações do empréstimo -->
+                <form method="POST" action="{{ url_for('bp_multas.gerar_multa', emprestimo_id=emprestimo.id) }}" class="pure-form pure-form-aligned">
+                    <div>
+                        <p><strong>Usuário:</strong> {{ emprestimo.usuario.nome }}</p>
+                        <p><strong>Livro:</strong> {{ emprestimo.livro.titulo }}</p>
+                        <p><strong>Data de Empréstimo:</strong> {{ emprestimo.data_emprestimo }}</p>
+                        <p><strong>Data Prevista de Devolução:</strong> {{ emprestimo.data_devolucao_prevista }}</p>
+                        <p><strong>Data Real de Devolução:</strong> {{ emprestimo.data_devolucao_real or 'Ainda não devolvido' }}</p>
+                    </div>
+
+                    {% if emprestimo.data_devolucao_real %}
+                        <div>
+                            <p><strong>Atraso:</strong> {{ atraso }} dias</p>
+                            <p><strong>Valor da Multa:</strong> {{ valor_multa }} (R$)</p>
+                        </div>
+                    {% else %}
+                        <p>O empréstimo ainda não foi devolvido.</p>
+                    {% endif %}
+
+                    <!-- Botões de Confirmação e Cancelamento -->
+                    <div class="pure-controls">
+                        <button type="submit" class="pure-button pure-button-primary pure-input-1-1" style="background-color: #4CAF50;">
+                            Confirmar Multa
+                        </button>
+                    </div>
+
+                    <div class="pure-controls">
+                        <a href="{{ url_for('bp_loan.view_emprestimos') }}" class="pure-button pure-button-secondary" style="background-color: #f44336;">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+    {% include "Bases/rodape.html"%}
+
+</body>
+
+</html>

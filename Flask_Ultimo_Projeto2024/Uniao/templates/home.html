@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"> <!-- A base é o https://pure-css.github.io/ --> <!-- Ela é grande pois baixei o pure css, ao invés de puxar da internet.-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}"> 
+</head>
+
+<body>
+    <header>
+        <h1 class="centralizar">Biblioteca do Igao</h1>
+    </header>
+
+    <main>
+        <h2 class="centralizar">Bem-vindo, {{nome}}!! 😀</h2><br>
+
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        
+        <!--NÃO MEXER. NÃO USAR INCLUDE AQUI. Isso pois essa sidenav tem o texto customizado para a home-->
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="{{ url_for('bp_inicio.login') }}">Fazer Login</a>
+            <a href="{{ url_for('bp_usuario.add_usuario') }}">Cadastre-se</a>
+        </div>
+
+
+        <hr>
+        {% include "Bases/flash.html"%}
+
+        <a class="pure-button pure-button-primary" href="{{ url_for('bp_books.view_books') }}">Ver Acervo</a>
+
+
+    </main>
+
+    <!-- Rodapé da página -->
+    {% include "Bases/rodape.html"%}
+
+
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+
+</body>
+</html>

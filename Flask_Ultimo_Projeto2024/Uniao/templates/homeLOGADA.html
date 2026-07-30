@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca do Igão - Home Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}"> <!-- A base é o https://pure-css.github.io/ --> <!-- Ela é grande pois baixei o pure css, ao invés de puxar da internet.-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}"> 
+</head>
+
+<body>
+    <header>
+        <h1 class="centralizar">Biblioteca do Igao</h1>
+    </header>
+
+    <main>
+        <h2 class="centralizar">Bem-vindo, {{nome}}!! Você está logado em nosso sistema 😀</h2><br>
+
+        <span class="pure-button-secondary" style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        {% include "Bases/sidenav.html"%}
+
+        <h2 style="color: rgb(35, 35, 196);">O que pretende fazer hoje?</h1>
+        <hr>
+        
+        <div style="display: flex; gap: 10px;":>
+            <a class="pure-button pure-button-purple" href="{{ url_for('bp_books.view_books') }}">Ver Acervo</a>
+            <a class="pure-button pure-button-purple" href='{{ url_for("bp_autores.index") }}'>Lista de Autores</a>
+            <a class="pure-button pure-button-purple" href='{{ url_for("bp_categories.view_categories") }}'>Lista de Categorias</a>
+            <a class="pure-button pure-button-purple" href='{{ url_for("bp_loan.view_emprestimos") }}'>Lista de Empréstimos</a>
+            <a class="pure-button pure-button-purple" href='{{ url_for("bp_multas.listar_multas") }}'>Lista de Multas</a>
+
+        </div>
+
+        {% include "Bases/flash.html"%}
+
+    </main>
+
+    <!-- Rodapé da página -->
+        {% include "Bases/rodape.html"%}
+
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+
+</body>
+</html>

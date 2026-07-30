@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Editar Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}"> 
+</head>
+
+<body>
+    <main>
+        <h1>Editar Usuário 👤</h1>
+
+        <!-- Mensagens Flash -->
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+
+        <div class="super-centralizar">
+            <div class="formulario">
+                <h1 class="centralizar">Formulário de Edição ✏️</h1>
+                
+                <!-- Formulário para editar usuário -->
+                <form action="{{ url_for('bp_usuario.edit_usuario', usuario_id=usuario.id) }}" method="POST" class="pure-form pure-form-aligned">
+                    <fieldset>
+                        <!-- Campo de edição para o nome do usuário -->
+                        <div class="pure-control-group">
+                            <label for="nome"><h3>Nome</h3></label>
+                            <input type="text" name="nome" id="nome" value="{{ usuario.nome }}" placeholder="Digite o nome do usuário" required>
+                        </div>
+
+                        <!-- Campo de edição para o email do usuário -->
+                        <div class="pure-control-group">
+                            <label for="email"><h3>E-mail</h3></label>
+                            <input type="email" name="email" id="email" value="{{ usuario.email }}" placeholder="Digite o e-mail do usuário" required>
+                        </div>
+
+                        <!-- Campo de edição para a senha do usuário -->
+                        <div class="pure-control-group">
+                            <label for="senha"><h3>Senha</h3></label>
+                            <input type="password" name="senha" id="senha" placeholder="Digite a nova senha" required>
+                        </div>
+
+                        <!-- Campo de edição para o tipo do usuário -->
+                        <div class="pure-control-group">
+                            <label for="tipo"><h3>Tipo</h3></label>
+                            <select name="tipo" id="tipo" required>
+                                <option value="usuario" {% if usuario.tipo == 'usuario' %}selected{% endif %}>Comum</option>
+                                <option value="admin" {% if usuario.tipo == 'admin' %}selected{% endif %}>Admin</option>
+                            </select>
+                        </div>
+
+                        <!-- Botão para submeter o formulário -->
+                        <div class="pure-controls">
+                            <button type="submit" class="pure-button pure-button-primary pure-input-1-1">Atualizar Usuário</button>
+                        </div>
+                    </fieldset>
+                </form>
+                <p><button class="pure-button pure-button-secondary"><a href="{{ url_for('bp_usuario.view_usuarios') }}">Voltar para a lista de usuários</a></button></p>
+                <button class="pure-button"><a href="{{ url_for('bp_inicio.index') }}" class="button">Voltar à Página Inicial</a></button>
+            </div>
+        </div>
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+</body>
+
+</html>

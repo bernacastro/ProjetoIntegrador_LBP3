@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Livros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1 class="centralizar">Lista de Livros</h1>
+    </header>
+
+    <main>
+
+        <!-- Exibição de mensagens de alerta -->
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+
+        <div class="imagem-botao toggle-button" data-target="esconder" onclick="toggleContent(this)">
+            <p>Cadastrar Livro &nbsp; </p>
+            <span><img src="{{url_for('static', filename='img/arrow.svg')}}"></span> <!-- Setinha para a direita -->
+        </div>
+
+
+        <br>
+        <br>
+
+        <div id="esconder" class="esconder">
+            {% include "Livro/addlivro.html" %}
+        </div>
+        <br>
+        <br>
+
+        {% include "Livro/verlivros-admin.html"%}
+
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+</body>
+
+</html>

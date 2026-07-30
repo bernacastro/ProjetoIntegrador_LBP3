@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Autores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+
+<body>
+
+    <!-- Cabeçalho da página -->
+    <header>
+        <h1 class="centralizar">Biblioteca Igao - Autores</h1>
+    </header>
+
+    <main>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+
+        <!-- Exibição de mensagens flash -->
+        {% include "Bases/flash.html"%}
+
+
+        <div class="imagem-botao toggle-button" data-target="esconder" onclick="toggleContent(this)">
+            <p>Autor &nbsp; </p>
+            <span><img src="{{url_for('static', filename='img/arrow.svg')}}"></span> <!-- Setinha para a direita -->
+        </div>
+
+
+        <div id="esconder" class="esconder">
+            {% include "Autor/addautor.html" %}
+        </div>
+
+        <!-- Título da seção -->
+        <h2>Lista de Autores 📚</h2>
+
+        <!-- Tabela de autores -->
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data de Nascimento</th>
+                    <th>Nacionalidade</th>
+                    <th>Livros</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if autores %}
+                {% for autor in autores %}
+                <tr>
+                    <td>{{ autor.nome }}</td>
+                    <td>{{ autor.data_nascimento }}</td>
+                    <td>{{ autor.nacionalidade }}</td>
+                    <td>
+                        <ul>
+                            {% for livro in autor.livros %}
+                            <li>Nome: {{ livro.titulo }}<br> Data: {{ livro.data_publicacao }}</li><br>
+                            {% else %}
+                            <li>Sem livros</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <button class="imagem-botao" style="display:inline;">
+                            <a href="{{ url_for('bp_autores.edit_autor', id=autor.id) }}"><img
+                                    src="{{url_for('static', filename='img/pencil.svg')}}" alt="Editar"></a>
+                        </button>
+                        <form action="{{ url_for('bp_autores.delete_autor', id=autor.id) }}" method="POST"
+                            style="display:inline;">
+
+                            <button type="submit" style="cursor: pointer;" class="imagem-botao"
+                                onclick="return confirm('Tem certeza que deseja excluir este autor?')">
+                                <img style="cursor: pointer;" src="{{url_for('static', filename='img/delete.svg')}}"
+                                    alt="Excluir">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5">Nenhum autor encontrado.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+
+
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+
+</body>
+
+</html>

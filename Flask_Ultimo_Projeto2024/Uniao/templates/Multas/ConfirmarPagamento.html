@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Pagamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}"> 
+
+</head>
+
+<body>
+    <header>
+        <h1>Confirmar Pagamento da Multa</h1>
+    </header>
+
+    <main>
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+
+        <p>Tem certeza de que deseja marcar a multa abaixo como PAGA?</p>
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>Informação</th>
+                    <th>Detalhe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ID da Multa:</td>
+                    <td>{{ multa.id }}</td>
+                </tr>
+                <tr>
+                    <td>Usuário:</td>
+                    <td>{{ multa.usuario.nome }}</td>
+                </tr>
+                <tr>
+                    <td>Valor:</td>
+                    <td>R$ {{ multa.valor }}</td>
+                </tr>
+                <tr>
+                    <td>Data de Geração:</td>
+                    <td>{{ multa.data_geracao }}</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>{{ multa.status }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        
+        <form method="POST" action="{{ url_for('bp_multas.pagar_multa', multa_id=multa.id) }}">
+            <button type="submit" class="pure-button pure-button-primary" style="background-color: #4CAF50;">Confirmar Pagamento</button>
+            <a href="{{ url_for('bp_multas.listar_multas') }}" class="pure-button" style="background-color: #f44336;">Cancelar</a>
+        </form>
+
+
+
+    {% include "Bases/rodape.html"%}
+
+
+</body>
+
+</html>

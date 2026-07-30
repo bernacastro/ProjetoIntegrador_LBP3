@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+
+<body>
+    <main>
+
+        <h1>Faça o seu login! 🖥️</h1>
+        {% include "Bases/flash.html"%}
+
+
+        <div class="super-centralizar">
+            <div class="formulario">
+                <h1 class="centralizar">Login</h1>
+                <form action="{{ url_for('bp_inicio.login') }}" method="post" class="pure-form pure-form-aligned">
+                    <fieldset>
+                        <div class="pure-control-group">
+                            <label for="usuario">
+                                <h3>Usuário (e-mail ou nome)</h3>
+                            </label>
+                            <input type="text" id="usuario" name="usuario"
+                                placeholder="Digite seu e-mail ou nome de usuário" required>
+                        </div>
+
+                        <div class="pure-control-group">
+                            <label for="senha">
+                                <h3>Senha</h3>
+                            </label>
+                            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                        </div>
+
+                        <div class="pure-control-group">
+                            <label></label>
+                            <button type="submit" class="pure-button pure-button-primary pure-input-1-3">Entrar</button>
+                        </div>
+                        <div class="pure-control-group">
+                            <label></label>
+                            <button class="pure-button success pure-input-1-3"><a
+                                    href="{{ url_for('bp_usuario.add_usuario') }}">Cadastre-se
+                                    aqui</a></button>
+                        </div>
+                        <div class="pure-control-group">
+                            <label></label>
+                            <a class="pure-button pure-input-1-4" href="{{ url_for('bp_inicio.index') }}">Home</a>
+                        </div>
+                    </fieldset>
+                </form>
+
+
+            </div>
+
+        </div>
+
+        <!-- Mensagens Flash -->
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+
+</body>
+
+</html>

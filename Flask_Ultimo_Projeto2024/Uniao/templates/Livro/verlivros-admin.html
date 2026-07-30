@@ -1,0 +1,115 @@
+<div class="formulario">
+
+  <h2>Filtrar Livros</h2>
+
+  <form method="GET" action="{{ url_for('bp_books.view_books') }}" class="pure-form pure-form-aligned">
+    <fieldset>
+      <div class="pure-control-group">
+        <label for="titulo"><h3>Título</h3></label>
+        <input type="text" id="titulo" name="titulo" placeholder="Digite o título do livro" value="{{ request.args.get('titulo', '') }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="autor_id"><h3>Autor</h3></label>
+        <select id="autor_id" name="autor_id" class="pure-input-1-2">
+          <option value="">Selecione um autor</option>
+          {% if autores %}
+            {% for autor in autores %}
+              <option value="{{ autor.id }}" {% if autor.id|string==request.args.get('autor_id', '') %} selected {% endif %}>
+                {{ autor.nome }}
+              </option>
+            {% endfor %}
+          {% else %}
+            <option value="" disabled>Não há autores cadastrados</option>
+          {% endif %}
+        </select>
+      </div>
+
+      <div class="pure-control-group">
+        <label for="categoria_id"><h3>Categoria</h3></label>
+        <select id="categoria_id" name="categoria_id">
+          <option value="">Selecione uma categoria</option>
+          {% if categorias %}
+            {% for categoria in categorias %}
+              <option value="{{ categoria.id }}" {% if categoria.id|string==request.args.get('categoria_id', '') %} selected {% endif %}>
+                {{ categoria.nome }}
+              </option>
+            {% endfor %}
+          {% else %}
+            <option value="" disabled>Não há categorias cadastradas</option>
+          {% endif %}
+        </select>
+      </div>
+
+      <div class="pure-control-group">
+        <label for="data_inicio"><h3>Data de Publicação</h3></label>
+        <input type="date" id="data_inicio" name="data_inicio" value="{{ request.args.get('data_inicio', '') }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="isbn"><h3>ISBN</h3></label>
+        <input type="text" id="isbn" name="isbn" placeholder="Digite o ISBN do livro" value="{{ request.args.get('isbn', '') }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label></label>
+        <button type="submit" class="pure-button pure-button-primary">Buscar</button>
+      </div>
+    </fieldset>
+  </form>
+  <form method="GET" action="{{ url_for('bp_books.view_books') }}">
+    <button type="submit" class="pure-button clear-button">Limpar Filtros</button>
+  </form>
+</section>
+</div>
+
+
+
+<section class="book-list">
+  <h2>Livros Cadastrados</h2>
+
+  <table class="pure-table">
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Categoria</th>
+              <th>ISBN</th>
+              <th>Data de Publicação</th>
+              <th>Quantidade Total</th>
+              <th>Quantidade Disponível</th>
+              <th>Ações</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% if livros %}
+              {% for livro in livros %}
+                  <tr>
+                      <td>{{ livro.id }}</td>
+                      <td>{{ livro.titulo }}</td>
+                      <td>{{ livro.autor if livro.autor else "Autor não definido" }}</td>
+                      <td>{{ livro.categoria if livro.categoria else "Categoria não definida" }}</td>
+                      <td>{{ livro.isbn }}</td>
+                      <td>{{ livro.data_publicacao }}</td>
+                      <td>{{ livro.quantidade_total }}</td>
+                      <td>{{ livro.quantidade_disponivel or "Não disponível" }}</td>
+                      <td>
+                        <button  class="imagem-botao" style="display:inline;">
+                          <a href="{{ url_for('bp_books.edit_book', id=livro.id) }}"><img src="{{url_for('static', filename='img/pencil.svg')}}" alt="Editar"></a>
+                        </button><br>
+                        <button type="submit" style="cursor: pointer;" class="imagem-botao" onclick="return confirm('Tem certeza que deseja excluir este livro?')"> 
+                          <a href="{{ url_for('bp_books.delete_book', id=livro.id) }}"><img style="cursor: pointer;" src="{{url_for('static', filename='img/delete.svg')}}" alt="Excluir"></a>
+                        </button>
+                        
+                      </td>
+                  </tr>
+              {% endfor %}
+          {% else %}
+              <tr>
+                  <td colspan="9">Nenhum livro encontrado.</td>
+              </tr>
+          {% endif %}
+      </tbody>
+  </table>
+</section>

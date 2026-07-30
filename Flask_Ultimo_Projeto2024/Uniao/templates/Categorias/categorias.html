@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Categorias</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+
+<body>
+
+    <!-- Cabeçalho da página -->
+    <header>
+        <h1 class="centralizar">Lista de Categorias</h1>
+    </header>
+
+    <main>
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+
+
+        <!-- Mensagens Flash -->
+
+        {% include "Bases/flash.html"%}
+        <div class="imagem-botao toggle-button" data-target="esconder" onclick="toggleContent(this)">
+            <p>Categoria &nbsp; </p>
+            <span><img src="{{url_for('static', filename='img/arrow.svg')}}"></span> <!-- Setinha para a direita -->
+        </div>
+
+
+
+        <div id="esconder" class="esconder">
+            {% include "Categorias/addcategoria.html" %}
+        </div>
+
+
+        <!-- Título secundário -->
+        <h2>Categorias Cadastradas 📋</h2>
+
+        <!-- Botões de ação -->
+
+        <!-- Tabela que exibirá os dados das categorias -->
+        <table class="pure-table">
+            <!-- Cabeçalho da tabela -->
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iteração sobre a lista de categorias fornecida pelo back-end -->
+                {% if categorias %}
+                {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria.id }}</td>
+                    <td>{{ categoria.nome }}</td>
+                    <td>
+                        <button class="imagem-botao" style="display:inline;">
+                            <a href="{{ url_for('bp_categories.edit_category', id=categoria.id) }}"> <img
+                                    src="{{url_for('static', filename='img/pencil.svg')}}" alt="Editar"></a>
+                        </button>
+                        <form action="{{ url_for('bp_categories.delete_category', id=categoria.id) }}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" style="cursor: pointer;" class="imagem-botao"
+                                onclick="return confirm('Tem certeza que deseja excluir esta categoria?')">
+                                <img style="cursor: pointer;" src="{{url_for('static', filename='img/delete.svg')}}"
+                                    alt="Excluir">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3">Nenhuma categoria encontrada.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+
+    </main>
+
+    <!-- Rodapé da página -->
+    {% include "Bases/rodape.html"%}
+
+
+</body>
+
+</html>

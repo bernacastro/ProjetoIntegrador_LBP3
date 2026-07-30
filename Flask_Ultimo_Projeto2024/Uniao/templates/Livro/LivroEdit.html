@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Livro - Biblioteca Igao</title>
+    <!-- Link para o arquivo de estilos CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <!-- Título da página de edição de livro -->
+        <h1>Editar Livro</h1>
+    </header>
+
+    <main>
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+        
+        <div class="super-centralizar">
+            <div class="formulario">
+                <h2 class="centralizar">Formulário de Edição</h2>
+                <!-- Formulário para edição de um livro específico -->
+                <form action="{{ url_for('bp_books.edit_book', id=livro.id) }}" method="POST"
+                    class="pure-form pure-form-aligned">
+
+                    <form action="{{ url_for('bp_books.edit_book', id=livro.id) }}" method="POST"
+                        class="pure-form pure-form-aligned">
+
+                        <!-- Campo de edição para o título do livro -->
+                        <div class="pure-control-group">
+                            <label for="titulo">Título:</label>
+                            <input type="text" name="titulo" id="titulo" class="pure-input-1-1"
+                                value="{{ livro.titulo }}" required>
+                        </div>
+
+                        <!-- Campo de edição para o ISBN do livro -->
+                        <div class="pure-control-group">
+                            <label for="isbn">ISBN:</label>
+                            <input type="text" name="isbn" id="isbn" class="pure-input-1-1" value="{{ livro.isbn }}"
+                                required>
+                        </div>
+
+                        <!-- Campo de edição para a data de publicação do livro -->
+                        <div class="pure-control-group">
+                            <label for="data_publicacao">Data de Publicação:</label>
+                            <input type="date" name="data_publicacao" id="data_publicacao" class="pure-input-1-1"
+                                value="{{ livro.data_publicacao }}" required>
+                        </div>
+
+                        <!-- Campo de edição para o número de páginas do livro -->
+                        <div class="pure-control-group">
+                            <label for="quantidade_total">Quantidade Total:</label>
+                            <input type="number" name="quantidade_total" id="quantidade_total" class="pure-input-1-1"
+                                value="{{ livro.quantidade_total }}" min="0" required>
+                        </div>
+
+                        <!-- Seletor para editar o autor do livro -->
+                        <div class="pure-control-group">
+                            <label for="autor_id">Autor:</label>
+                            <select name="autor_id" id="autor_id" class="pure-input-1-2" required>
+                                <option value="0">Desconhecido</option>
+                                {% if autores %}
+                                {% for autor in autores %}
+                                <option value="{{ autor.id }}" {% if autor.id==livro.autor_id %}selected{% endif %}>
+                                    {{ autor.nome }}
+                                </option>
+                                {% endfor %}
+                                {% else %}
+                                <option value="" disabled>Não há autores cadastrados</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <!-- Seletor para editar a categoria do livro -->
+                        <div class="pure-control-group">
+                            <label for="categoria_id">Categoria:</label>
+                            <select name="categoria_id" id="categoria_id" class="pure-input-1-1" required>
+                                <option value="0">Desconhecido</option>
+
+                                {% if categorias %}
+                                {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}" {% if categoria.id==livro.categoria_id %}selected{%
+                                    endif %}>
+                                    {{ categoria.nome }}
+                                </option>
+                                {% endfor %}
+                                {% else %}
+                                <option value="" disabled>Não há categorias cadastradas</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <!-- Botão para submeter o formulário e atualizar as informações do livro -->
+                        <div class="pure-control-group">
+                            <button type="submit" class="pure-button pure-button-primary">Atualizar Livro</button>
+                        </div>
+                    </form>
+
+            </div>
+        </div>
+        <a href="{{ url_for('bp_books.view_books') }}" class="pure-button">Voltar para a lista de livros</a>
+
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+
+
+</body>
+
+</html>

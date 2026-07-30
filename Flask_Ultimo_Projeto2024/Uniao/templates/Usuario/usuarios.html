@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}"> 
+</head>
+
+<body>
+
+    <header>
+        <h1 class="centralizar">Lista de Usuários</h1>
+    </header>
+
+    <main>
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+        <h2>Usuários Cadastrados 📋</h2>
+
+
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Tipo</th>
+                    <th>Data de Criação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if usuarios %}
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.nome }}</td>
+                    <td>{{ usuario.email }}</td>
+                    <td>{{ usuario.tipo }}</td>
+                    <td>{{ usuario.data_criacao }}</td>
+                    <td>
+                        <button  class="imagem-botao" style="display:inline;">
+                            <a href="{{ url_for('bp_usuario.edit_usuario', usuario_id=usuario.id) }}"><img src="{{url_for('static', filename='img/pencil.svg')}}" alt="Editar"></a>
+                        </button>
+                        <form action="{{ url_for('bp_usuario.delete_usuario', usuario_id=usuario.id) }}" method="POST" style="display:inline;">
+                            
+                                <button type="submit" style="cursor: pointer;" class="imagem-botao" onclick="return confirm('Tem certeza que deseja excluir este usuário?')"> 
+                                    <img style="cursor: pointer;" src="{{url_for('static', filename='img/delete.svg')}}" alt="Excluir">
+                                </button>
+                            
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6">Nenhum usuário encontrado.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <br>
+
+    </main>
+
+    {% include "Bases/rodape.html"%}
+    <button class="pure-button pure-button-primary"><a href="{{ url_for('bp_usuario.add_usuario') }}">Adicionar Novo Usuário</a></button><br><br>
+    <button class="pure-button"><a href="{{ url_for('bp_inicio.index') }}" class="button">Voltar à Página Inicial</a></button>
+
+
+</body>
+
+</html>

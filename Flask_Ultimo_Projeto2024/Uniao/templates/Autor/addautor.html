@@ -1,0 +1,35 @@
+<div class="formulario">
+  <h1 class="centralizar">Cadastro de Autor</h1><br>
+  <form action="{{ url_for('bp_autores.add_autor') }}" method="post" class="pure-form pure-form-aligned">
+      <fieldset>
+
+          <div class="pure-control-group">
+              <label for="nome"><h3>Nome do Autor</h3></label>
+              <input type="text" id="nome" name="nome" placeholder="Digite o nome do autor" class="pure-input-1-2" required><br>
+          </div>
+
+          <div class="pure-control-group">
+              <label for="data_nascimento"><h3>Data de Nascimento:</h3></label>
+              <input type="date" id="data_nascimento" name="data_nascimento" required><br>
+          </div>
+
+          <div class="pure-control-group">
+              <label for="nacionalidade"><h3>Nacionalidade:</h3></label>
+              <input type="text" id="nacionalidade" name="nacionalidade" class="pure-input-1-2" placeholder="Digite a nacionalidade"
+              required><br>
+          </div>
+          
+          <div class="pure-control-group">
+              <label></label>
+              <button type="submit" class="pure-button pure-button-primary">Cadastrar Autor</button>
+          </div>
+
+          <div class="pure-control-group">
+              <label></label>
+              <a class="pure-button" href="{{ url_for('bp_autores.view_autores') }}">Ver Autores</a></button>
+          </div>
+
+      </fieldset>
+  </form>
+
+</div>

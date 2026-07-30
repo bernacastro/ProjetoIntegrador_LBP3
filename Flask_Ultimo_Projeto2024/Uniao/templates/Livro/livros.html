@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Livros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1 class="centralizar">Lista de Livros</h1>
+    </header>
+
+    <main>
+
+        <!-- Exibição de mensagens de alerta -->
+        {% include "Bases/flash.html" %}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+        <!-- Formulário de busca -->
+        <section class="search-form">
+            <h2>Buscar Livros</h2>
+            <form method="GET" action="{{ url_for('bp_books.view_books') }}">
+                <div class="form-group">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Digite o título do livro"
+                        value="{{ request.args.get('titulo', '') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="autor_id">Autor</label>
+                    <select id="autor_id" name="autor_id">
+                        <option value="">Selecione um autor</option>
+                        {% if autores %}
+                        {% for autor in autores %}
+                        <option value="{{ autor.id }}" {% if autor.id|string==request.args.get('autor_id', '' ) %}
+                            selected {% endif %}>
+                            {{ autor.nome }}
+                        </option>
+                        {% endfor %}
+                        {% else %}
+                        <option value="" disabled>Não há autores cadastrados</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria_id">Categoria</label>
+                    <select id="categoria_id" name="categoria_id">
+                        <option value="">Selecione uma categoria</option>
+                        {% if categorias %}
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if
+                            categoria.id|string==request.args.get('categoria_id', '' ) %} selected {% endif %}>
+                            {{ categoria.nome }}
+                        </option>
+                        {% endfor %}
+                        {% else %}
+                        <option value="" disabled>Não há categorias cadastradas</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="data_inicio">Data de Publicação</label>
+                    <input type="date" id="data_inicio" name="data_inicio"
+                        value="{{ request.args.get('data_inicio', '') }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" placeholder="Digite o ISBN do livro"
+                        value="{{ request.args.get('isbn', '') }}">
+                </div>
+
+                <button type="submit" class="pure-button">Buscar</button>
+            </form>
+
+            <!-- Limpar filtros -->
+            <form method="GET" action="{{ url_for('bp_books.view_books') }}">
+                <button type="submit" class="pure-button clear-button">Limpar Filtros</button>
+            </form>
+        </section>
+
+        <!-- Lista de livros cadastrados -->
+        <section class="book-list">
+            <h2>Livros Cadastrados</h2>
+            <div class="add-book">
+                <a href="{{ url_for('bp_inicio.index') }}" class="pure-button pure-button-primary">Adicionar Novo
+                    Livro</a>
+            </div>
+
+            <table class="pure-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Categoria</th>
+                        <th>ISBN</th>
+                        <th>Data de Publicação</th>
+                        <th>Quantidade Total</th>
+                        <th>Quantidade Disponível</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if livros %}
+                    {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro.id }}</td>
+                        <td>{{ livro.titulo }}</td>
+                        <td>{{ livro.autor if livro.autor else "Autor não definido" }}</td>
+                        <td>{{ livro.categoria if livro.categoria else "Categoria não definida" }}</td>
+                        <td>{{ livro.isbn }}</td>
+                        <td>{{ livro.data_publicacao }}</td>
+                        <td>{{ livro.quantidade_total }}</td>
+                        <td>{{ livro.quantidade_disponivel or "Não disponível" }}</td>
+                        <td>
+                            <a href="{{ url_for('bp_books.edit_book', id=livro.id) }}" class="pure-button">Editar</a>
+                            <a href="{{ url_for('bp_books.delete_book', id=livro.id) }}" class="pure-button">Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="9">Nenhum livro encontrado.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+        <a href="{{ url_for('bp_inicio.index') }}" class="pure-button">Voltar à Página Inicial</a>
+    </footer>
+
+</body>
+
+</html>

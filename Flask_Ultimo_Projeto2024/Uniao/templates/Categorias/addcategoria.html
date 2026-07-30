@@ -1,0 +1,22 @@
+<div class="formulario">
+  <h1 class="centralizar">Adicionar Categoria</h1><br>
+  <form action="{{ url_for('bp_categories.add_category') }}" method="post" class="pure-form pure-form-aligned">
+      <fieldset>
+
+          <div class="pure-control-group">
+              <label for="categoria"><h3>Categoria</h3></label>
+              <input type="text" id="categoria" name="categoria" class="pure-input-1-2" placeholder="Insira a categoria" required>
+          </div>
+      
+          <div class="pure-control-group">
+              <label></label> <!-- Chamar o label assim, sem nada, é a mesma coisa que chamar uma função margem-->
+              <button type="submit" class="pure-button pure-button-primary">Adicionar Categoria</button>
+          </div>
+          <div class="pure-control-group">
+            <label></label>
+            <a class="pure-button" href="{{ url_for('bp_categories.view_categories') }}">Ver Categorias</a></button>
+          </div>
+
+      </fieldset>
+  </form>
+</div>

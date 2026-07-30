@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Categoria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1 class="centralizar">Biblioteca Igao - Editar Categoria</h1>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        <!-- Mensagens Flash -->
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+
+        {% include "Bases/sidenav.html"%}
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+        
+
+        <!-- Formulário de Edição de Categoria -->
+        <div class="super-centralizar">
+            <div class="formulario">
+                <h1 class="centralizar">Formulário de Edição ✏️</h1>
+                
+                <form action="{{ url_for('bp_categories.edit_category', id=categoria.id) }}" method="POST" class="pure-form pure-form-aligned">
+                    <fieldset>
+                        <!-- Campo de entrada para o nome da categoria -->
+                        <div class="pure-control-group">
+                            <label for="categoria"><h3>Nome da Categoria</h3></label>
+                            <input type="text" id="categoria" name="categoria" class="pure-input-1-1" value="{{ categoria.nome }}" required>
+                        </div>
+
+                        <!-- Botão para salvar alterações -->
+                        <div class="pure-control-group">
+                            <label></label>
+                            <button type="submit" class="pure-button pure-button-primary pure-input-1-1">Salvar Alterações</button>
+                        </div>
+                        <div class="pure-control-group">
+                            <label></label>
+                            <a class="pure-button pure-button-secondary" href="{{ url_for('bp_categories.view_categories') }}">Voltar para a lista de categorias</a>
+                        </div>
+                    </fieldset>
+                </form>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    {% include "Bases/rodape.html"%}
+
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Empréstimos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1 class="centralizar">Gerenciamento de Empréstimos</h1>
+    </header>
+
+    <main>
+        {% include "Bases/flash.html"%}
+
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <span style="font-size:20px;cursor:pointer" onclick="openNav()">&#9776; Outros Links</span><br><br>
+        {% include "Bases/sidenav.html"%}
+        
+        <br>
+        <a href=" {{ url_for('bp_inicio.index')}}" class="pure-button pure-button-purple">Home</a>
+        <br>
+
+        <div class="imagem-botao toggle-button" data-target="esconder" onclick="toggleContent(this)">
+            <p>Emprestimo &nbsp; </p>
+            <span><img src="{{url_for('static', filename='img/arrow.svg')}}"></span> <!-- Setinha para a direita -->
+        </div>
+
+        <div id="esconder" class="esconder">
+            {% include "Emprestimo/addemprestimo.html" %}
+        </div>
+
+        </div>
+
+
+        <h2>Buscar Empréstimos</h2>
+        <form method="GET" action="{{ url_for('bp_loan.view_emprestimos') }}">
+            <div class="form-group">
+                <label for="usuario_id">Usuário</label>
+                <input type="text" id="usuario_id" name="usuario_id" placeholder="ID do Usuário"
+                    value="{{ request.args.get('usuario_id', '') }}">
+            </div>
+            <div class="form-group">
+                <label for="livro_id">Livro</label>
+                <input type="text" id="livro_id" name="livro_id" placeholder="ID do Livro"
+                    value="{{ request.args.get('livro_id', '') }}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="pure-button">Buscar</button>
+            </div>
+        </form>
+        <form method="GET" action="{{ url_for('bp_loan.view_emprestimos') }}">
+            <div class="form-group">
+                <button type="submit" class="pure-button" style="background-color: #f44336;">Limpar Filtros</button>
+            </div>
+        </form>
+
+
+        <h2>Empréstimos Cadastrados</h2>
+
+
+        <table class="pure-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuário</th>
+                    <th>Livro</th>
+                    <th>Data do Empréstimo</th>
+                    <th>Data Prevista de Devolução</th>
+                    <th>Data Real de Devolução</th>
+                    <th>Valor da Multa</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if emprestimos %}
+                {% for emprestimo in emprestimos %}
+                <tr>
+                    <td>{{ emprestimo.id }}</td>
+                    <td>{{ emprestimo.usuario }}</td>
+                    <td>{{ emprestimo.livro }}</td>
+                    <td>{{ emprestimo.data_emprestimo }}</td>
+                    <td>{{ emprestimo.data_devolucao_prevista }}</td>
+                    <td>
+                        {% if emprestimo.data_devolucao_real %}
+                        Devolvido: {{ emprestimo.data_devolucao_real }}
+                        {% else %}
+                        Pendente
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if emprestimo.multas %}
+                        {% set valor_multa = emprestimo.multas[0].valor %}
+                        R${{ valor_multa }}
+                        {% else %}
+                        Nenhuma
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('bp_loan.edit_emprestimo', emprestimo_id=emprestimo.id) }}"
+                            class="pure-button">Editar</a>
+                        <a href="{{ url_for('bp_loan.deletar_emprestimo', emprestimo_id=emprestimo.id) }}"
+                            class="pure-button" style="background-color: #f44336;">Excluir</a>
+
+                        {% if not emprestimo.data_devolucao_real %}
+                        <a href="{{ url_for('bp_loan.marcar_devolvido', emprestimo_id=emprestimo.id) }}"
+                            class="pure-button" style="background-color: #4CAF50;">Marcar como Devolvido</a>
+                        {% endif %}
+
+                        <a href="{{ url_for('bp_multas.gerar_multa', emprestimo_id=emprestimo.id) }}"
+                            class="pure-button" style="background-color: #FFC107;">Adicionar Multa</a>
+
+                        <a href="{{ url_for('bp_multas.listar_multas', usuario_id=emprestimo.usuario_id) }}"
+                            class="pure-button" style="background-color: #2196F3;">Visualizar Multas</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="8">Nenhum empréstimo encontrado.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </main>
+
+    {% include "Bases/rodape.html"%}
+
+
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<div class="formulario">
+    <h1 class="centralizar">Adicionar Livro</h1><br>
+
+    <form action="{{ url_for('bp_books.add_book') }}" method="post" class="pure-form pure-form-aligned">
+        <!-- A classe é só para estilo mesmo. O mesmo vai se repetir abaixo. As classes não têm propósito a não ser estilo.-->
+        <fieldset> <!-- Demarca os campos do formulário. Puramente por estilo.-->
+
+            <div class="pure-control-group">
+                <label for="titulo">
+                    <h3>Título</h3>
+                </label>
+                <!-- O label tem uma margem, mas que pode ser removida tranquilamente. Eu não a removi pois gostei :O -->
+                <input class="pure-input-1-2" type="text" id="titulo" name="titulo"
+                    placeholder="Digite o título do livro" required>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="autor_id">
+                    <h3>Autor</h3>
+                </label>
+
+                <select id="autor_id" name="autor_id" class="pure-input-1-2" required>
+
+                    <option value="" disabled>Selecione um autor</option>
+                    <option value="0">Desconhecido</option>
+
+                    {% if autores %}
+                    {% for autor in autores %}
+                    <option value="{{ autor.id }}">{{ autor.nome }}</option>
+                    {% endfor %}
+
+                    {% else %}
+                    <option value="" disabled>Não há autores cadastrados</option>
+                    {% endif %}
+
+                </select>
+            </div>
+            <div class="pure-control-group">
+                <label for="categoria_id">
+                    <h3>Categoria</h3>
+                </label>
+                <select id="categoria_id" name="categoria_id" class="pure-input-1-2" required>
+                    <option value="" disabled>Selecione a categoria</option>
+                    <option value="0">Desconhecido</option>
+                    {% if categorias %}
+                    {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                    {% endfor %}
+                    {% else %}
+                    <option value="" disabled>Não há categorias cadastradas</option>
+                    {% endif %}
+                </select>
+                <br>
+            </div>
+
+
+            <div class="pure-control-group">
+                <label for="isbn">
+                    <h3>ISBN</h3>
+                </label>
+                <input type="text" id="isbn" name="isbn" placeholder="Digite o ISBN" class="pure-input-1-2"
+                    required><br>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="quantidade_total">
+                    <h3>Quantidade Total</h3>
+                </label>
+                <input type="number" id="quantidade_total" name="quantidade_total" class="pure-input-1-2"
+                    placeholder="Total Disponivel" required><br>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="publicadoEm">
+                    <h3>Data de Publicação</h3>
+                </label>
+                <input type="date" id="publicadoEm" name="publicadoEm" required>
+            </div>
+
+
+            <div class="pure-control-group">
+                <label></label>
+                <!-- Esse label é bem na gambiarra. Serve pra dar o espaço antes do botão, pra alinhar com os outros campos input-->
+                <button type="submit" class="pure-button pure-button-primary">Adicionar Livro</button>
+            </div>
+
+            <div class="pure-control-group">
+                <label></label>
+                <a class="pure-button" href="{{ url_for('bp_books.view_books') }}">Ver Livros</a>
+            </div>
+
+        </fieldset>
+    </form>
+
+
+
+</div>
