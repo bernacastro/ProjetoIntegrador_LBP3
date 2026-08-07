@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Multas{% endblock %}
+
+{% block content %}
+<h2>Multas</h2>
+<ul>
+    {% for multa in multas %}
+    <li>
+        <strong>Multa #{{ multa.pk }}</strong> — {{ multa.emprestimo.livro.titulo }}
+        <br>
+        Valor: R$ {{ multa.valor }} | Status: {{ multa.get_status_display }}
+        {% if multa.status == 'PENDENTE' %}
+        <a href="{% url 'pagar_multa' multa.pk %}">Pagar</a>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>Nenhuma multa registrada.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

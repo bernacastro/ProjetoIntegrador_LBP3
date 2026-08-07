@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Empréstimos{% endblock %}
+
+{% block content %}
+<h2>Empréstimos</h2>
+<a class="button" href="{% url 'editar' 'emprestimo' 0 %}">Novo empréstimo</a>
+<ul>
+    {% for emprestimo in emprestimos %}
+    <li>
+        <strong>{{ emprestimo.livro.titulo }}</strong> — {{ emprestimo.usuario }}
+        <br>
+        Prevista: {{ emprestimo.data_devolucao_prevista }} | Entregue: {{ emprestimo.data_devolucao_real|default:"Não devolvido" }}
+        {% if emprestimo.data_devolucao_real is None %}
+        <a href="{% url 'devolver' emprestimo.pk %}">Devolver</a>
+        <a href="{% url 'gerar_multa' emprestimo.pk %}">Gerar multa</a>
+        {% endif %}
+        <a href="{% url 'excluir' 'emprestimo' emprestimo.pk %}">Excluir</a>
+    </li>
+    {% empty %}
+    <li>Nenhum empréstimo registrado.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
