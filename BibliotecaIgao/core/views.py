@@ -6,3 +6,18 @@ def inicio(request):
 
 def sobre(request):
     return render(request, 'core/sobre.html')
+
+def livros(request):
+    return render(request, 'core/lista_livros.html')
+
+def autores(request):
+    return render(request, 'core/lista_autores.html')
+
+def emprestimos(request):
+    return render(request, 'core/lista_emprestimos.html')
+
+def generos(request):
+    return render(request, 'core/lista_generos.html')
+
+def multas(request):
+    return render(request, 'core/lista_multas.html')

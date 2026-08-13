@@ -1,21 +1,57 @@
-{% extends 'core/base.html' %}
-
-{% block title %}Lista de Livros{% endblock %}
-
-{% block content %}
-<h2>Livros cadastrados</h2>
-
-<ul class="item-list">
-{% for livro in livros %}
-<li>
-<strong>{{ livro.titulo }}</strong>
-<a class="button" href="/livros/{{ livro.id }}/">Ver detalhes</a>
-</li>
-{% endfor %}
-</ul>
-
-<div class="actions">
-    <a class="button secondary" href="/">Inicio</a>
-</div>
-
-{% endblock %}
+{% extends 'core/base.html' %}{% block content %}<h2>{{ titulo }}</h2>{% if pagina == 'livros' %}<form method="get"
+    class="pesquisa"><input name="q" value="{{ consulta }}" placeholder="Título ou ISBN"><button>Pesquisar</button>
+</form>{% endif %}<h3>Novo cadastro</h3>
+<form method="post" class="formulario">{% csrf_token %}{{ form.as_p }}<button>Cadastrar</button></form>
+<h3>Registros</h3>
+<div class="tabela-wrap">
+    <table>
+        <thead>
+            <tr>{% if pagina == 'autores' %}<th>Nome</th>
+                <th>Nascimento</th>
+                <th>Nacionalidade</th>{% elif pagina == 'categorias' %}<th>Nome</th>{% else %}<th>Título</th>
+                <th>ISBN</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+                <th>Disponíveis</th>{% endif %}<th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for objeto in objetos %}
+                <tr>
+                    {% if pagina == 'autores' %}
+                        <td>{{ objeto.nome }}</td>
+                        <td>{{ objeto.data_nascimento|default:'-' }}</td>
+                        <td>{{ objeto.nacionalidade }}</td>
+                    {% elif pagina == 'categorias' %}
+                        <td>{{ objeto.nome }}</td>
+                        <td>-</td>
+                        <td>-</td>
+                    {% else %}
+                        <td>{{ objeto.titulo }}</td>
+                        <td>{{ objeto.isbn }}</td>
+                        <td>{{ objeto.autor }}</td>
+                        <td>{{ objeto.categoria }}</td>
+                        <td>{{ objeto.quantidade_disponivel }}/{{ objeto.quantidade_total }}</td>
+                    {% endif %}
+        
+                    <td class="acoes">
+                        {% if pagina == 'autores' %}
+                            <a href="{% url 'editar' 'autor' objeto.pk %}">Editar</a>
+                            <a href="{% url 'excluir' 'autor' objeto.pk %}">Excluir</a>
+                        {% elif pagina == 'categorias' %}
+                            <a href="{% url 'editar' 'categoria' objeto.pk %}">Editar</a>
+                            <a href="{% url 'excluir' 'categoria' objeto.pk %}">Excluir</a>
+                        {% else %}
+                            <a href="{% url 'editar' 'livro' objeto.pk %}">Editar</a>
+                            <a href="{% url 'excluir' 'livro' objeto.pk %}">Excluir</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">Nenhum registro.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>{% endblock %}
