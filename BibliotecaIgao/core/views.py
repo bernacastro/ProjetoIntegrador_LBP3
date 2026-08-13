@@ -21,3 +21,6 @@ def generos(request):
 
 def multas(request):
     return render(request, 'core/lista_multas.html')
+
+def not_found(request, exception):
+    return render(request, 'core/404.html', status=404)

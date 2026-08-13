@@ -21,3 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
 ]
+
+handler_404 = 'core.views.not_found'
