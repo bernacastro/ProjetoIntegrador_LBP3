@@ -11,7 +11,10 @@
         <br>
         Valor: R$ {{ multa.valor }} | Status: {{ multa.get_status_display }}
         {% if multa.status == 'PENDENTE' %}
-        <a href="{% url 'pagar_multa' multa.pk %}">Pagar</a>
+        <form method="post" action="{% url 'pagar_multa' multa.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Pagar</button>
+        </form>
         {% endif %}
     </li>
     {% empty %}

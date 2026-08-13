@@ -1,21 +1,51 @@
 {% extends 'core/base.html' %}
 
-{% block title %}Lista de Livros{% endblock %}
+{% block title %}Livros{% endblock %}
 
 {% block content %}
 <h2>Livros cadastrados</h2>
 
-<ul class="item-list">
-{% for livro in livros %}
-<li>
-<strong>{{ livro.titulo }}</strong>
-<a class="button" href="/livros/{{ livro.id }}/">Ver detalhes</a>
-</li>
-{% endfor %}
-</ul>
+<p>
+    <a class="botao" href="{% url 'editar' 'livro' 0 %}">Novo livro</a>
+</p>
 
-<div class="actions">
-    <a class="button secondary" href="/">Inicio</a>
+<div class="tabela-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>ISBN</th>
+                <th>Autor</th>
+                <th>Categoria</th>
+                <th>Total</th>
+                <th>Disponíveis</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for livro in livros %}
+            <tr>
+                <td>{{ livro.titulo }}</td>
+                <td>{{ livro.isbn }}</td>
+                <td>{{ livro.autor.nome }}</td>
+                <td>{{ livro.categoria.nome }}</td>
+                <td>{{ livro.quantidade_total }}</td>
+                <td>{{ livro.quantidade_disponivel }}</td>
+                <td class="acoes">
+                    <a href="{% url 'editar' 'livro' livro.pk %}">Editar</a>
+                    <form method="post" action="{% url 'excluir' 'livro' livro.pk %}">
+                        {% csrf_token %}
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Nenhum livro cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-
 {% endblock %}
