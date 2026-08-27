@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ucdmh!z+9$@x8q7)9ayzqzo!8j5tuo7gqickphc*i(*bf4al5*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -52,10 +52,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+global_templates = Path(__file__).resolve().parent.parent
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [global_templates / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
