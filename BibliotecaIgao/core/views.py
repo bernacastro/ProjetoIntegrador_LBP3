@@ -1,6 +1,5 @@
 from decimal import Decimal
 
-
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
@@ -153,7 +152,8 @@ def editar(request, tipo, pk):
 
     else:
         return redirect("inicio")
-        instance = None if pk == 0 else get_object_or_404(model, pk=pk)
+
+    instance = None if pk == 0 else get_object_or_404(model, pk=pk)
 
     if request.method == "POST":
         form = form_class(request.POST, instance=instance)
@@ -205,6 +205,42 @@ def excluir(request, tipo, pk):
         },
     )
 
+@login_required
+def adicionar(request, tipo):
+    # Apenas administradores podem adicionar autor, categoria e livro
+    if tipo in ["autor", "categoria", "livro"] and not eh_admin(request.user):
+        return redirect("inicio")
+
+    MAPA_FORMULARIOS = {
+        "autor": (AutorForm, "Autor", "autores"),
+        "categoria": (CategoriaForm, "Categoria", "categorias"),
+        "livro": (LivroForm, "Livro", "livros"),
+        "emprestimo": (EmprestimoForm, "Empréstimo", "emprestimos"),
+    }
+
+    if tipo not in MAPA_FORMULARIOS:
+        return redirect("inicio")
+
+    form_class, title, success_name = MAPA_FORMULARIOS[tipo]
+
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            obj = form.save()
+
+            if tipo == "emprestimo":
+                obj.livro.quantidade_disponivel -= 1
+                obj.livro.save(update_fields=["quantidade_disponivel"])
+
+            return redirect(success_name)
+    else:
+        form = form_class()
+
+    return render(
+        request,
+        "core/forms.html",
+        {"form": form, "titulo": f"Novo {title}"},
+    )
 
 # --- AÇÕES ESPECÍFICAS ---
 
@@ -240,10 +276,7 @@ def gerar_multa(request, pk):
             data_referencia = timezone.localdate()
 
         if data_referencia > emprestimo.data_devolucao_prevista:
-            dias_atraso = (
-                data_referencia -
-                emprestimo.data_devolucao_prevista
-            ).days
+            dias_atraso = (data_referencia - emprestimo.data_devolucao_prevista).days
 
             valor = Decimal(dias_atraso) * Decimal("2.00")
 
