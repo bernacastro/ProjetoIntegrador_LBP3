@@ -1,5 +1,19 @@
-{% extends 'core/base.html' %}{% block content %}
+{% extends 'core/base.html' %}
 
-Exibir lista de gêneros disponíveis na biblioteca
+{% block title %}Categorias{% endblock %}
 
+{% block content %}
+<h2>Categorias</h2>
+<a class="button" href="{% url 'editar' 'categoria' 0 %}">Nova categoria</a>
+<ul>
+    {% for categoria in categorias %}
+    <li>
+        <strong>{{ categoria.nome }}</strong>
+        <a href="{% url 'editar' 'categoria' categoria.pk %}">Editar</a>
+        <a href="{% url 'excluir' 'categoria' categoria.pk %}">Excluir</a>
+    </li>
+    {% empty %}
+    <li>Nenhuma categoria cadastrada.</li>
+    {% endfor %}
+</ul>
 {% endblock %}

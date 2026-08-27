@@ -1,21 +1,24 @@
-{% extends 'core/base.html' %}{% block content %}<h2>Multas</h2>
-<div class="tabela-wrap">
-    <table>
-        <tr>
-            <th>Usuário</th>
-            <th>Livro</th>
-            <th>Valor</th>
-            <th>Status</th>
-            <th>Ações</th>
-        </tr>{% for m in multas %}<tr>
-            <td>{{ m.emprestimo.usuario }}</td>
-            <td>{{ m.emprestimo.livro }}</td>
-            <td>R$ {{ m.valor }}</td>
-            <td>{{ m.get_status_display }}</td>
-            <td class="acoes">{% if m.status == 'PENDENTE' %}<a href="{% url 'pagar_multa' m.pk %}">Marcar como
-                    paga</a>{% endif %} <a href="{% url 'excluir' 'multa' m.pk %}">Excluir</a></td>
-        </tr>{% empty %}<tr>
-            <td colspan="5">Nenhuma multa.</td>
-        </tr>{% endfor %}
-    </table>
-</div>{% endblock %}
+{% extends 'core/base.html' %}
+
+{% block title %}Multas{% endblock %}
+
+{% block content %}
+<h2>Multas</h2>
+<ul>
+    {% for multa in multas %}
+    <li>
+        <strong>Multa #{{ multa.pk }}</strong> — {{ multa.emprestimo.livro.titulo }}
+        <br>
+        Valor: R$ {{ multa.valor }} | Status: {{ multa.get_status_display }}
+        {% if multa.status == 'PENDENTE' %}
+        <form method="post" action="{% url 'pagar_multa' multa.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Pagar</button>
+        </form>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>Nenhuma multa registrada.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
