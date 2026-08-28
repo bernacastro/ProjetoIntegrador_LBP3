@@ -27,4 +27,6 @@ Aqui estão todos os erros identificados no projeto, divididos por arquivo:
 * **Comando de navegação incorreto:** No passo a passo de instalação, o comando indicava `cd Django_Biblioteca`, porém o diretório correto do projeto no repositório é `BibliotecaIgao`.
 
 
-botão gerar Multa esta fake
+alguns botões estão mal formatados
+
+display de autores, categorias e o que mais precisar em tabelas
