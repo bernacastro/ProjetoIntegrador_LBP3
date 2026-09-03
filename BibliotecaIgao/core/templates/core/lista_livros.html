@@ -6,8 +6,8 @@
 <h2>Livros cadastrados</h2>
 
 <p>
-   <a href="{% url 'adicionar' 'livro' %}">Adicionar Livro</a>
-    
+<p><a class="button" href="{% url 'adicionar' 'livro' %}">Adicionar livro</a></p>
+
 </p>
 
 <div class="tabela-wrap">
@@ -29,13 +29,13 @@
             <tr>
                 <td>{{ livro.titulo }}</td>
                 <td>{{ livro.isbn }}</td>
-                <td>{{ livro.autor.nome }}</td>
-                <td>{{ livro.categoria.nome }}</td>
+                <td>{{ livro.autor.nome|default:"Desconhecido" }}</td>
+                <td>{{ livro.categoria.nome|default:"Desconhecida" }}</td>
                 <td>{{ livro.quantidade_total }}</td>
                 <td>{{ livro.quantidade_disponivel }}</td>
                 <td class="acoes">
-                    <a href="{% url 'editar' 'livro' livro.pk %}">Editar</a>
-                    <form method="post" action="{% url 'excluir' 'livro' livro.pk %}">
+                    <a href="{% url 'editar' 'livro' livro.pk %}" class="button">Editar</a>
+                    <form method="post" action="{% url 'excluir' 'livro' livro.pk %}" style="display: inline;">
                         {% csrf_token %}
                         <button type="submit">Excluir</button>
                     </form>

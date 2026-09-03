@@ -1,32 +1,4 @@
-Aqui estão todos os erros identificados no projeto, divididos por arquivo:
-
----
-
-### 1. `BibliotecaIgao/core/views.py`
-
-* **Código inalcançável (Unreachable Code):** Na função `editar`, o bloco `else:` que continha `return redirect("inicio")` estava posicionado **antes** da definição da variável `instance` (`instance = None if pk == 0 else get_object_or_404(model, pk=pk)`). Com isso, quando o tipo era inválido, o redirecionamento acontecia, mas em casos válidos a variável `instance` não era alcançada, gerando erro de variável não definida (`UnboundLocalError`) mais adiante no código.
-* **Ordem de resolução do `instance`:** No fluxo do `editar`, a tentativa de carregar o objeto (`instance`) no banco ocorria após as validações do tipo, mas a lógica do método `POST` precisava saber se tratava de uma criação (`instance is None`) ou edição.
-* **Sintaxe/Formatação em `gerar_multa`:** No cálculo da variável `dias_atraso`, a quebra de linha dentro do parêntese do objeto `(data_referencia - emprestimo.data_devolucao_prevista)` causava erro de sintaxe.
-
----
-
-### 2. `BibliotecaIgao/core/models.py`
-
-* **Lógica na contagem de exemplares disponíveis (`Livro.save`):** Na verificação `if not self.pk and not self.quantidade_disponivel:`, se o valor de `quantidade_disponivel` fosse `0` (zero), a condição `not self.quantidade_disponivel` avaliava como verdadeira em Python. Isso fazia com que, ao editar ou salvar um livro com 0 exemplares disponíveis, o sistema redefinisse incorretamente a quantidade disponível para o valor total (`quantidade_total`). O correto é checar expressamente se é `None`: `self.quantidade_disponivel is None`.
-
----
-
-### 3. `BibliotecaIgao/core/static/css/style.css`
-
-* **CSS truncado/incompleto:** Na última linha do arquivo, o seletor `.acoes` foi aberto sem propriedades ou fechamento de chaves (`.acoes`), o que gera erro de sintaxe no CSS.
-
----
-
-### 4. `BibliotecaIgao/README.md`
-
-* **Comando de navegação incorreto:** No passo a passo de instalação, o comando indicava `cd Django_Biblioteca`, porém o diretório correto do projeto no repositório é `BibliotecaIgao`.
-
-
-alguns botões estão mal formatados
-
-display de autores, categorias e o que mais precisar em tabelas
+mensagem de erro para quando um usuário comum tentar criar um autor novo
+mensagem de erro para quando o usuário tenta aplicar uma multa
+tentar editar e excluir o que der
+validação da senha, email e user

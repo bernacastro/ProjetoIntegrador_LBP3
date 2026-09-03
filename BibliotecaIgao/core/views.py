@@ -3,9 +3,11 @@ from decimal import Decimal
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
+from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
+
 
 from .forms import (
     AutorForm,
@@ -188,12 +190,21 @@ def excluir(request, tipo, pk):
     obj = get_object_or_404(config["model"], pk=pk)
 
     if request.method == "POST":
-        if tipo == "emprestimo" and obj.data_devolucao_real is None:
-            obj.livro.quantidade_disponivel += 1
-            obj.livro.save(update_fields=["quantidade_disponivel"])
+        try:
+            if tipo == "emprestimo" and obj.data_devolucao_real is None:
+                obj.livro.quantidade_disponivel += 1
+                obj.livro.save(update_fields=["quantidade_disponivel"])
 
-        obj.delete()
-        return redirect(config["redirect"])
+            obj.delete()
+            return redirect(config["redirect"])
+            
+        except ProtectedError:
+            # Se o banco bloquear a exclusão, renderiza a tela de erro
+            return render(
+                request, 
+                "core/exclusao_protegida.html", 
+                {"tipo": config["title"], "objeto": obj}
+            )
 
     return render(
         request,

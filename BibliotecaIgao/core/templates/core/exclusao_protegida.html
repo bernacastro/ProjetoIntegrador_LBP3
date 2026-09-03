@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Erro de Exclusão{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 40px 20px;">
+    <h2 style="border-bottom: none; font-size: 3rem; margin-bottom: 10px; color: #cc0000;">Bloqueado</h2>
+    <h3 style="margin-top: 0; margin-bottom: 20px;">Não é possível excluir este item.</h3>
+    <p style="color: #6c757d; max-width: 500px; margin: 0 auto 30px auto;">
+        O {{ tipo|lower }} <strong>"{{ objeto }}"</strong> não pode ser apagado porque está sob empréstimo no momento. 
+        <br><br>
+        Resolva essas pendências (devolvendo ou apagando os empréstimos relacionados) antes de tentar novamente.
+    </p>
+    <a class="button" href="javascript:history.back()">Voltar para a página anterior</a>
+</div>
+{% endblock %}

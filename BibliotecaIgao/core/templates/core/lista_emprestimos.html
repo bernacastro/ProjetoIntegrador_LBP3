@@ -4,28 +4,46 @@
 
 {% block content %}
 <h2>Empréstimos</h2>
-<a class="button" href="{% url 'editar' 'emprestimo' 0 %}">Novo empréstimo</a>
-<ul>
-    {% for emprestimo in emprestimos %}
-    <li>
-        <strong>{{ emprestimo.livro.titulo }}</strong> — {{ emprestimo.usuario }}
-        <br>
-        Prevista: {{ emprestimo.data_devolucao_prevista }} | Entregue: {{ emprestimo.data_devolucao_real|default:"Não
-        devolvido" }}
-        {% if emprestimo.data_devolucao_real is None %}
-        <form method="post" action="{% url 'devolver' emprestimo.pk %}">
-            {% csrf_token %}
-            <button type="submit">Devolver</button>
-        </form>
-        <form method="post" action="{% url 'gerar_multa' emprestimo.pk %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Gerar multa</button>
-        </form>
-        {% endif %}
-        <a href="{% url 'excluir' 'emprestimo' emprestimo.pk %}">Excluir</a>
-    </li>
-    {% empty %}
-    <li>Nenhum empréstimo registrado.</li>
-    {% endfor %}
-</ul>
+<p><a class="button" href="{% url 'editar' 'emprestimo' 0 %}">Novo empréstimo</a></p>
+
+<div class="tabela-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Livro</th>
+                <th>Usuário</th>
+                <th>Devolução Prevista</th>
+                <th>Devolução Real</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emprestimo in emprestimos %}
+            <tr>
+                <td><strong>{{ emprestimo.livro.titulo }}</strong></td>
+                <td>{{ emprestimo.usuario }}</td>
+                <td>{{ emprestimo.data_devolucao_prevista }}</td>
+                <td>{{ emprestimo.data_devolucao_real|default:"Não devolvido" }}</td>
+                <td class="acoes">
+                    {% if emprestimo.data_devolucao_real is None %}
+                    <form method="post" action="{% url 'devolver' emprestimo.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button">Devolver</button>
+                    </form>
+                    <form method="post" action="{% url 'gerar_multa' emprestimo.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button">Gerar multa</button>
+                    </form>
+                    {% endif %}
+                    <a href="{% url 'excluir' 'emprestimo' emprestimo.pk %}" class="button">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum empréstimo registrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

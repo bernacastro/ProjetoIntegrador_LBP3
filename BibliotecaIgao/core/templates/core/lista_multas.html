@@ -4,21 +4,39 @@
 
 {% block content %}
 <h2>Multas</h2>
-<ul>
-    {% for multa in multas %}
-    <li>
-        <strong>Multa #{{ multa.pk }}</strong> — {{ multa.emprestimo.livro.titulo }}
-        <br>
-        Valor: R$ {{ multa.valor }} | Status: {{ multa.get_status_display }}
-        {% if multa.status == 'PENDENTE' %}
-        <form method="post" action="{% url 'pagar_multa' multa.pk %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Pagar</button>
-        </form>
-        {% endif %}
-    </li>
-    {% empty %}
-    <li>Nenhuma multa registrada.</li>
-    {% endfor %}
-</ul>
+<div class="tabela-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Livro</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for multa in multas %}
+            <tr>
+                <td><strong>#{{ multa.pk }}</strong></td>
+                <td>{{ multa.emprestimo.livro.titulo }}</td>
+                <td>R$ {{ multa.valor }}</td>
+                <td>{{ multa.get_status_display }}</td>
+                <td class="acoes">
+                    {% if multa.status == 'PENDENTE' %}
+                    <form method="post" action="{% url 'pagar_multa' multa.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button">Pagar</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhuma multa registrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

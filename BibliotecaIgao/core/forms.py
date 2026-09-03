@@ -27,6 +27,11 @@ class LivroForm(forms.ModelForm):
         fields = ["titulo", "isbn", "data_publicacao", "autor", "categoria", "quantidade_total"]
         widgets = {"data_publicacao": forms.DateInput(attrs={"type": "date"})}
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['autor'].required = True
+        self.fields['categoria'].required = True
+
 
 class EmprestimoForm(forms.ModelForm):
     class Meta:

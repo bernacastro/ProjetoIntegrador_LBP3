@@ -23,13 +23,13 @@ class Livro(models.Model):
     titulo = models.CharField(max_length=150)
     isbn = models.CharField(max_length=20, unique=True)
     data_publicacao = models.DateField(blank=True, null=True)
-    autor = models.ForeignKey(Autor, on_delete=models.PROTECT, related_name="livros")
-    categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="livros")
+    autor = models.ForeignKey(Autor, on_delete=models.SET_NULL, null=True, blank=True, related_name="livros")
+    categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True, related_name="livros")
     quantidade_total = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     quantidade_disponivel = models.PositiveIntegerField(editable=False)
 
     def save(self, *args, **kwargs):
-        if not self.pk and not self.quantidade_disponivel:
+        if not self.pk and self.quantidade_disponivel is None:
             self.quantidade_disponivel = self.quantidade_total
         super().save(*args, **kwargs)
 

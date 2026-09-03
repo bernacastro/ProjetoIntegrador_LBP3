@@ -5,9 +5,10 @@ Versão independente do projeto Flask, desenvolvida com Django, SQLite, ORM, `Mo
 ## Como executar
 
 ```powershell
-cd Django_Biblioteca
+cd BibliotecaIgao
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1 ## Linux
+venv\Scripts\Activate ## Windows
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate

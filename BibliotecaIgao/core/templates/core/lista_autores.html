@@ -4,16 +4,33 @@
 
 {% block content %}
 <h2>Autores</h2>
-<a class="button" href="{% url 'editar' 'autor' 0 %}">Novo autor</a>
-<ul>
-    {% for autor in autores %}
-    <li>
-        <strong>{{ autor.nome }}</strong> — {{ autor.nacionalidade }}
-        <a href="{% url 'editar' 'autor' autor.pk %}">Editar</a>
-        <a href="{% url 'excluir' 'autor' autor.pk %}">Excluir</a>
-    </li>
-    {% empty %}
-    <li>Nenhum autor cadastrado.</li>
-    {% endfor %}
-</ul>
+<p><a class="button" href="{% url 'editar' 'autor' 0 %}">Novo autor</a></p>
+
+<div class="tabela-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Nacionalidade</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for autor in autores %}
+            <tr>
+                <td><strong>{{ autor.nome }}</strong></td>
+                <td>{{ autor.nacionalidade }}</td>
+                <td class="acoes">
+                    <a href="{% url 'editar' 'autor' autor.pk %}" class="button">Editar</a>
+                    <a href="{% url 'excluir' 'autor' autor.pk %}" class="button">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Nenhum autor cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
