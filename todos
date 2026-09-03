@@ -1,4 +1,2 @@
-mensagem de erro para quando um usuário comum tentar criar um autor novo
-mensagem de erro para quando o usuário tenta aplicar uma multa
-tentar editar e excluir o que der
-validação da senha, email e user
+botão de confirmar exclusão de autores, categorias, empréstimos e livros sem estilização
+livro não tem confirmação de exclusão, clicou no botão e ele já apaga

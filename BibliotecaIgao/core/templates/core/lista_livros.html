@@ -35,10 +35,7 @@
                 <td>{{ livro.quantidade_disponivel }}</td>
                 <td class="acoes">
                     <a href="{% url 'editar' 'livro' livro.pk %}" class="button">Editar</a>
-                    <form method="post" action="{% url 'excluir' 'livro' livro.pk %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit">Excluir</button>
-                    </form>
+                    <a href="{% url 'excluir' 'livro' livro.pk %}" class="button">Excluir</a>
                 </td>
             </tr>
             {% empty %}

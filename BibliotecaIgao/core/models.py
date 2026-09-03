@@ -31,6 +31,10 @@ class Livro(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk and self.quantidade_disponivel is None:
             self.quantidade_disponivel = self.quantidade_total
+        elif self.pk:
+            emprestados = self.emprestimos.filter(data_devolucao_real__isnull=True).count()
+            self.quantidade_disponivel = max(0, self.quantidade_total - emprestados)
+            
         super().save(*args, **kwargs)
 
     def __str__(self): return self.titulo

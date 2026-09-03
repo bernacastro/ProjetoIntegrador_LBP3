@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
@@ -116,6 +117,7 @@ def editar(request, tipo, pk):
     # Autor, categoria e livro só podem ser
     # criados ou editados pelo administrador.
     if tipo in ["autor", "categoria", "livro"] and not eh_admin(request.user):
+        messages.error(request, "Você não tem permissão para realizar esta ação.")
         return redirect("inicio")
 
     # Usuário comum pode criar empréstimo,
@@ -172,6 +174,10 @@ def editar(request, tipo, pk):
     else:
         form = form_class(instance=instance)
 
+    if tipo == "emprestimo" and not eh_admin(request.user):
+        form.fields['usuario'].queryset = form.fields['usuario'].queryset.filter(pk=request.user.pk)
+        form.fields['usuario'].initial = request.user
+
     return render(
         request,
         "core/forms.html",
@@ -183,6 +189,10 @@ def editar(request, tipo, pk):
 
 @login_required
 def excluir(request, tipo, pk):
+    if tipo in ["autor", "categoria", "livro"] and not eh_admin(request.user):
+        messages.error(request, "Você não tem permissão para excluir este item.")
+        return redirect("inicio")
+    
     config = MODEL_CONFIG.get(tipo)
     if not config:
         return redirect("inicio")
@@ -220,6 +230,7 @@ def excluir(request, tipo, pk):
 def adicionar(request, tipo):
     # Apenas administradores podem adicionar autor, categoria e livro
     if tipo in ["autor", "categoria", "livro"] and not eh_admin(request.user):
+        messages.error(request, "Você não tem permissão para realizar esta ação.")
         return redirect("inicio")
 
     MAPA_FORMULARIOS = {
@@ -246,6 +257,10 @@ def adicionar(request, tipo):
             return redirect(success_name)
     else:
         form = form_class()
+
+    if tipo == "emprestimo" and not eh_admin(request.user):
+        form.fields['usuario'].queryset = form.fields['usuario'].queryset.filter(pk=request.user.pk)
+        form.fields['usuario'].initial = request.user
 
     return render(
         request,
@@ -274,6 +289,10 @@ def devolver(request, pk):
 
 @login_required
 def gerar_multa(request, pk):
+    if not eh_admin(request.user):
+        messages.error(request, "Apenas administradores podem gerar multas.")
+        return redirect("multas")
+
     if request.method != "POST":
         return redirect("multas")
 
@@ -295,6 +314,9 @@ def gerar_multa(request, pk):
                 emprestimo=emprestimo,
                 valor=valor,
             )
+            messages.success(request, "Multa gerada com sucesso.")
+    else:
+        messages.warning(request, "Erro: Este empréstimo já possui uma multa registrada.")
 
     return redirect("multas")
 

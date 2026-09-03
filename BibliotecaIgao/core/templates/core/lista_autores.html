@@ -12,6 +12,7 @@
             <tr>
                 <th>Nome</th>
                 <th>Nacionalidade</th>
+                <th>Nascimento</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
             <tr>
                 <td><strong>{{ autor.nome }}</strong></td>
                 <td>{{ autor.nacionalidade }}</td>
+                <td>{{ autor.data_nascimento|date:"d/m/Y"|default:"Não informado" }}</td>
                 <td class="acoes">
                     <a href="{% url 'editar' 'autor' autor.pk %}" class="button">Editar</a>
                     <a href="{% url 'excluir' 'autor' autor.pk %}" class="button">Excluir</a>
@@ -27,7 +29,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3">Nenhum autor cadastrado.</td>
+                <td colspan="4">Nenhum autor cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>

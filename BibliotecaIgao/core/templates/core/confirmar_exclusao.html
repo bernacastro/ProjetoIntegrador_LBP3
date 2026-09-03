@@ -13,10 +13,10 @@
 
 <form method="post">
     {% csrf_token %}
+    
+    <button type="submit" style="background-color: #dc3545; border-color: #dc3545;">Sim, excluir</button>
 
-    <button type="submit">Sim, excluir</button>
-
-    <a href="{% url url_cancelar %}">Cancelar</a>
+    <a href="{% url url_cancelar %}" class="button" style="background-color: #6c757d; border-color: #6c757d;">Cancelar</a>
 </form>
 
 {% endblock %}
